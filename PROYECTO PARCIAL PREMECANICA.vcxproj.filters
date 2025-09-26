@@ -32,7 +32,7 @@
     <ClInclude Include="JUEGO.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Tutor.h">
+    <ClInclude Include="Dialogo.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Auditor.h">

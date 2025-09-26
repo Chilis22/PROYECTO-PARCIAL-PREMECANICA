@@ -36,6 +36,42 @@ const string arteTutor[ALTO_TUTOR] = {
     "||         ||",
     "`----------`"
 };
+const string arte1[15] = {
+   
+   "            _ ___ _ ",
+   "        .-\xEF         `-.",
+   "      \xFA\xEF               `.",
+   "    \xFA\xEF       \xFA---\xFA       `.",
+   "   /        |     |        \\",
+   "  /         |     |         \\",
+   " /          '     '          \\",
+   ".            \\   /            .",
+   "|:            `-\xEF             |",
+   "|:                            |",
+   "':           .---.            '",
+   " \\           `---\xEF           / ",
+   "  `.\xFA                      .\xEF  ",
+   "    `-.\xFA \xFA \xFA \xFA \xFA \xFA \xFA \xFA _:-\xEF    ",
+   "        \xEE \xEE\xEE \xEE\xEE\xEE\xEE \xEE\xEE \xEE          ",
+};
+const string arte2[15] = {
+
+   "            _ ___ _ ",
+   "        .-\xEF         `-.",
+   "      \xFA\xEF               `.",
+   "    \xFA\xEF                   `.",
+   "   /         \xFA---\xFA         \\",
+   "  /         |     |         \\",
+   " /          |     |          \\",
+   ".           '     '           .",
+   "|:           \\   /            |",
+   "|:            `-\xEF             |",
+   "':           .---.            '",
+   " \\           `---\xEF           / ",
+   "  `.\xFA                      .\xEF  ",
+   "    `-.\xFA \xFA \xFA \xFA \xFA \xFA \xFA \xFA _:-\xEF    ",
+   "        \xEE \xEE\xEE \xEE\xEE\xEE\xEE \xEE\xEE \xEE          ",
+};
 
 // --- Clase para gestionar el Mundo ---
 class Mundo {
@@ -85,6 +121,7 @@ private:
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
     };
 
+
 public:
     Mundo() {} // Constructor
 
@@ -96,29 +133,37 @@ public:
                 int valor = mapa[f][c];
                 PosicionarCursor(c, f);
                 switch (valor) {
-                case 0: // Espacio vacío
-                    DibujarCaracterRGB(0, 0, 0, ' ');
+                case 0: DibujarCaracterRGB(0, 0, 0, ' ');
                     break;
-                case 1: // Pared
-                    DibujarCaracterRGB(255, 255, 255, char(219));
+                case 1: DibujarCaracterRGB(255, 255, 255, char(219));
+                    
                     break;
-                case 2: // Máquina IA (Lógica)
-                    DibujarCaracterRGB(0, 255, 0, char(178));
+                case 2:DibujarCaracterRGB(0, 255, 0, char(178));
+                    
                     break;
-                case 3: // Máquina Humana (Caos)
-                    DibujarCaracterRGB(255, 255, 0, char(177));
+                case 3: DibujarCaracterRGB(255, 255, 0, char(177));
+                    
                     break;
-                case 4: // Decoración interna de las máquinas
-                    DibujarCaracterRGB(100, 100, 100, '+');
+                case 4:DibujarCaracterRGB(100, 100, 100, '+');
+				case 5: DibujarCaracterRGB(255, 0, 0, '´');
+				case 6: DibujarCaracterRGB(255, 0, 0, char(4));
+                    
                     break;
                 }
             }
         }
 
         // --- Dibujamos al Tutor ---
-        dibujarTutor(30, 8);
+        dibujarTutor(90, 22);
+		
     }
-
+    void dibujarArteAnimado(int x, int y, int frame) {
+        const string* arte = (frame % 2 == 0) ? arte1 : arte2;
+        for (int i = 0; i < 15; i++) {
+            PosicionarCursor(x, y + i);
+            cout << "\033[38;2;255;255;0m" << arte[i] << "\033[0m";
+        }
+    }
 private:
     // Método interno para dibujar al Tutor
     void dibujarTutor(int x, int y) {
@@ -127,4 +172,5 @@ private:
             cout << "\033[38;2;0;255;255m" << arteTutor[i] << "\033[0m";
         }
     }
+    
 };

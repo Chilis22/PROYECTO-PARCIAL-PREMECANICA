@@ -1,80 +1,81 @@
+// JUEGO.h
+#pragma once
 #include <iostream>
 #include <conio.h>
 #include <windows.h>
-#include "Tutor.h" // ¡Incluimos al Tutor!
 #include "Auditor.h"
 #include "Mundos.h"
+#include "Dialogo.h" // ¡Incluimos nuestra nueva clase Dialogo!
+
 using namespace System;
 using namespace std;
 
 class Juego {
 private:
-    Tutor* miTutor;
-    Auditor* miAuditor; // ¡Creamos el espacio para nuestro jugador!
+    Auditor* miAuditor;
+    Mundo* miMundo;
+    Dialogo* miDialogo; // Usamos un objeto Dialogo, no Tutor
     bool juegoActivo;
-    string pista; // Para guardar la pista del Tutor
-    Mundo* MiMundo1;
+    string pista;
 
 public:
-    // Constructor: Crea los objetos necesarios
     Juego() {
-        miTutor = new Tutor();
-        // Creamos al Auditor en una posición inicial
-        miAuditor = new Auditor(10, 5);
+        miAuditor = new Auditor(10, 35);
+        miMundo = new Mundo();
+        // Creamos el cuadro de diálogo en una posición y tamaño definidos
+        miDialogo = new Dialogo(25, 8, 70, 15);
         juegoActivo = true;
-        pista = ""; // La pista empieza vacía
-        MiMundo1 = new Mundo();
+        pista = "";
     }
 
-    // Destructor: Libera la memoria
     ~Juego() {
-        delete miTutor;
-        delete miAuditor; // Liberamos la memoria del auditor
-		delete MiMundo1;
+        delete miAuditor;
+        delete miMundo;
+        delete miDialogo;
     }
 
     void iniciarPartida() {
-        // --- PASO 1: Premecánica ---
-       // int resultadoDialogo = miTutor->realizarDialogoMundoIA();
+        Console::Clear();
+        miMundo->dibujar(); // Dibuja el escenario
+        miAuditor->dibujar(); // Dibuja al auditor
 
-        // --- PASO 2: Guardamos el resultado del diálogo ---
-       // if (resultadoDialogo == 1) {
-           // pista = "Pista: No todas las reglas estan hechas para ser seguidas.";
-      //  }
+        // --- Ejecuta la premecánica usando la nueva clase Dialogo ---
+      /*  int resp = miDialogo->mostrarPregunta("Auditor, has entrado al Mundo IA. ¿Confiaras en la logica o en la creatividad?",
+            "La logica es el unico camino.",
+            "A veces, la solucion no esta en los datos.");
 
-        // --- PASO 3: Bucle Principal del Juego ---
+        if (resp == 2) {
+            pista = "Pista: No todas las reglas estan hechas para ser seguidas.";
+		}
+		else {
+			pista = "Pista: La logica puede ser un arma de doble filo.";
+		}
+        */
+        // --- Comienza el bucle de juego interactivo ---
         buclePrincipal();
     }
 
-private: // Métodos internos del juego
+private:
     void buclePrincipal() {
-
         char tecla = 0;
-        //dibujamos el primer mundo
-        
-
-        // El bucle principal ahora maneja el movimiento y el dibujo
-        Console::Clear();
-        MiMundo1->dibujar();
-        miAuditor->dibujar();
+        int frame = 0;
         while (juegoActivo) {
+            
+            miMundo->dibujarArteAnimado(10, 5, frame);
 
-            // 1. Procesar Input
             if (_kbhit()) {
                 tecla = _getch();
-                if (tecla == 27) { // Tecla ESC para salir
+                if (tecla == 27) { // ESC para salir
                     juegoActivo = false;
                 }
-                // Llamamos al método mover del propio Auditor
-                miAuditor->mover(tecla);
+                else {
+                    miAuditor->borrar();
+                    miAuditor->mover(tecla);
+                    miAuditor->dibujar();
+                }
             }
-
-            // 2. Dibujar todo en pantalla
-            
-            miAuditor->dibujar();
-            Sleep(50);
+            frame++;
+            Sleep(120); // Ajusta la velocidad de animación
         }
     }
-
-    
 };
